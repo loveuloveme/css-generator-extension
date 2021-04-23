@@ -3,12 +3,25 @@
 
     display: flex;
     justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    bottom: 38px;
 
     &-item{
-        font-size: 2.7rem;
+        $height: 47px;
+
+
+        width: 140px;
+
+        height: $height;
+        line-height: $height;
+        
+        background-color: #141414;
+        text-align: center;
+        font-size: 1rem;
         color: rgb(180, 180, 180);
         font-weight: bold;
-        margin-top: -1.75rem;
 
         cursor: pointer;
 
@@ -19,7 +32,8 @@
         }
 
         &.selected{
-            color: #fff;
+            background-color: #fff;
+            color: #000;
         }
     }
 }

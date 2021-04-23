@@ -1,0 +1,49 @@
+@import '../../base/colors';
+
+.slider{
+    &-add{
+        font-weight: bold;
+        font-weight: 600;
+        color: $blue;
+        margin-top: 18px;
+
+        text-transform: lowercase;
+
+        cursor: pointer;
+
+        //align-self: flex-end;
+        margin-bottom: 15px;
+    }
+
+    &-wrapper{
+        width: 90%;
+        padding: 0 15px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        margin-top: 10px;
+
+        &-angle{
+            display: flex;
+            width: 100%;
+
+            .angle{
+                font-size: 2rem;
+                margin-left: 18px;
+                margin-top: -24px;
+                padding: 10px;
+                width: 146px;
+                text-align: right;
+                background-color: white;
+                color: #000;
+
+                span{
+                    margin-left: 3px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

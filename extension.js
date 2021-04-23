@@ -3,16 +3,23 @@ const fs = require('fs');
 const path = require('path');
 
 function activate(context) {
+    var panel = undefined;
+    var position = undefined;
+    var lastPosition = undefined;
+    var editor = undefined;
+    var editByExt = false;
+
+    var events = [];
     
 	let disposable = vscode.commands.registerCommand('css-generator.helloWorld', function () {
 		vscode.window.showInformationMessage('Hello World from css-generator!');
 	});
-    
-    let createEditorWindow = vscode.commands.registerCommand('css-generator.openEditor', function () {
-		const panel = vscode.window.createWebviewPanel(
+
+    let initWebViewPanel = () => {
+        panel = vscode.window.createWebviewPanel(
             'catCoding',
             'CSS Gradient Background',
-            vscode.ViewColumn.Five,
+            vscode.ViewColumn.Eight,
             {
                 enableScripts: true
             }
@@ -20,14 +27,91 @@ function activate(context) {
 
         let html = getWebviewContent(context, panel);
         panel.webview.html = html;
+
+        let firstTime = true;
+
+        function parseCode(code, position){
+            let start = position.character;
+            let strings = code.split(/\n/g);
+            let tab = new Array(position.character + 1).join(' ');
+            
+            return strings.join('\n'+tab);
+        }
+
         panel.webview.onDidReceiveMessage(
             message => {
-                console.log(message);
+                if(message.command == 'css-code'){
+                    if(firstTime){
+                        editor.edit(editBuilder => {
+                            editByExt = true;
+                            editBuilder.insert(position, parseCode(message.text, position));
+                            lastPosition = position.with(position.line + 2, position.character + message.text.length);
+                        });
+                        firstTime = false;
+                    }else{
+                        editor.edit(editBuilder => {
+                            editByExt = true;
+                            editBuilder.replace(new vscode.Range(position, lastPosition), parseCode(message.text, position) );
+                            lastPosition = position.with(position.line + 2, position.character + message.text.length);
+                        });
+                    }
+                }
             },
             undefined,
             context.subscriptions
         );
+
+        panel.onDidDispose(
+            () => {
+                console.log('Dispose');
+                panel = undefined;
+                events.forEach(e => e.dispose());
+                events = [];
+            },
+            null,
+            context.subscriptions
+        );
+    };
     
+    let createEditorWindow = vscode.commands.registerCommand('css-generator.openEditor', function (){
+        editor = vscode.window.activeTextEditor;
+        position = editor.selection.active;
+        lastPosition = undefined;
+        editByExt = false;
+
+        if(!!panel){
+            console.log('used');
+            panel.dispose();
+        }
+
+        initWebViewPanel();
+
+        events.push(
+            vscode.workspace.onDidChangeTextDocument(() => {
+                console.log('onDidChangeTextDocument', editByExt);
+                if(editByExt){
+                    editByExt = false;
+                }else{
+                    panel.dispose();
+                }
+            }, null, context.subscriptions)
+        );
+
+        events.push(
+            vscode.workspace.onDidCloseTextDocument(() => {
+                console.log('onDidCloseTextDocument');
+                panel.dispose();
+            }, null, context.subscriptions)
+        );
+
+
+        events.push(
+            vscode.workspace.onDidOpenTextDocument(() => {
+                console.log('onDidOpenTextDocument');
+                panel.dispose();
+            }, null, context.subscriptions)
+        );
+
 	});
 
 	context.subscriptions.push(disposable);
