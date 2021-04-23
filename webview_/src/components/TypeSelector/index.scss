@@ -1,0 +1,25 @@
+.type{
+    width: 90%;
+
+    display: flex;
+    justify-content: center;
+
+    &-item{
+        font-size: 2.7rem;
+        color: rgb(180, 180, 180);
+        font-weight: bold;
+        margin-top: -1.75rem;
+
+        cursor: pointer;
+
+        transition: all 0.2s linear;
+
+        &:hover{
+            color: #fff;
+        }
+
+        &.selected{
+            color: #fff;
+        }
+    }
+}

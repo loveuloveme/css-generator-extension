@@ -1,0 +1,19 @@
+$scroll-color: rgb(133, 133, 133);
+* {
+    scrollbar-width: thin;
+    scrollbar-color: $scroll-color transparent;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: $scroll-color;
+    border-radius: 20px;
+}

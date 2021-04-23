@@ -1,36 +1,80 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+const fs = require('fs');
+const path = require('path');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-
-/**
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "css-generator" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
+    
 	let disposable = vscode.commands.registerCommand('css-generator.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from css-generator!');
+	});
+    
+    let createEditorWindow = vscode.commands.registerCommand('css-generator.openEditor', function () {
+		const panel = vscode.window.createWebviewPanel(
+            'catCoding',
+            'CSS Gradient Background',
+            vscode.ViewColumn.Five,
+            {
+                enableScripts: true
+            }
+        );
+
+        let html = getWebviewContent(context, panel);
+        panel.webview.html = html;
+        panel.webview.onDidReceiveMessage(
+            message => {
+                console.log(message);
+            },
+            undefined,
+            context.subscriptions
+        );
+    
 	});
 
 	context.subscriptions.push(disposable);
+    context.subscriptions.push(createEditorWindow);
 }
 
-// this method is called when your extension is deactivated
 function deactivate() {}
 
 module.exports = {
 	activate,
 	deactivate
+}
+
+function getWebviewContent(context, panel) {
+    function insertHead(html, data){
+        let headIndex = html.indexOf('</head>');
+        html = html.substr(0, headIndex)+data.toString()+ html.substr(headIndex);
+        return html;
+    }
+
+    try{
+        const htmlPath = path.join(__dirname, './webview_/build/index.html');
+        let html = fs.readFileSync(htmlPath).toString();
+
+        const nonce = getNonce();
+
+        //html = insertHead(html, `<base href="${vscode.Uri.file(path.join(context.extensionPath, 'webview_')).with({ scheme: 'vscode-resource' })}/">`);
+        //html = insertHead(html, `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}';style-src vscode-resource: 'unsafe-inline' http: https: data:;"></meta>`);
+
+        html = insertHead(html, `<script>window.acquireVsCodeApi = acquireVsCodeApi;</script>`);
+        let hrefs = [...html.matchAll(/href=['"]([^'"]+?)['"]/g), ...html.matchAll(/src=['"]([^'"]+?)['"]/g)];
+
+        hrefs.forEach(item => {
+            html = html.replace(item[1], panel.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, `/webview_/build${item[1]}`))));
+        });
+
+        return html;
+    }catch (e){
+        return `Error getting HTML for web view: ${e}`;
+    }
+}
+
+function getNonce() {
+	let text = "";
+	const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	for (let i = 0; i < 32; i++) {
+		text += possible.charAt(Math.floor(Math.random() * possible.length));
+	}
+	return text;
 }
