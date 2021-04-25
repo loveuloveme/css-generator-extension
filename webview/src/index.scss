@@ -13,13 +13,16 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 300px;
+    min-width: 100px;
+
+    overflow: hidden;
+    
+    padding: 0 !important;
 }
 
 #root{
-    width: 684px;
-    height: 100%;
-    min-width: 300px;
+    min-width: 100px;
+    height: 100vh !important;
     
     &.cover{
         width: 100%;

@@ -45,8 +45,9 @@ function RangeController({values, setValues, angle, setAngle, type}){
                 Angle
             </div>
             <div className={"slider-wrapper-angle" + (type === 1 ? ' disabled': '')}>
-                <Slider 
-                    railStyle={{backgroundColor: '#323232'}}
+                <Slider
+                    className="angle-slider" 
+                    railStyle={{backgroundColor: '#828282'}}
                     trackStyle={{backgroundColor: '#fff'}}
                     handleStyle={{
                         border: 'none',
@@ -74,6 +75,7 @@ function RangeController({values, setValues, angle, setAngle, type}){
                 pushable={1}
                 min={0}
                 max={100}
+                className="range-slider"
 
                 // activeDotStyle={{
                 //     backgroundColor: 'red'
@@ -95,7 +97,7 @@ function RangeController({values, setValues, angle, setAngle, type}){
                     }
                 })}
 
-                railStyle={{ backgroundColor: '#323232'}}
+                railStyle={{ backgroundColor: '#828282'}}
             />
 
             <div

@@ -3,7 +3,7 @@
 	"displayName": "css-generator",
 	"description": "CSS gradient generator",
 	"version": "0.0.1",
-    "icon": "./img/icon.png",
+    "icon": "./media/icon.png",
 	"engines": {
 		"vscode": "^1.55.0"
 	},
@@ -15,6 +15,26 @@
 	],
 	"main": "./extension.js",
 	"contributes": {
+        "viewsContainers": {
+            "activitybar": [
+              {
+                "id": "vstodo-sidebar-view",
+                "title": "VSTodo",
+                "icon": "media/terminal-linux.svg"
+              }
+            ]
+          },
+          "views": {
+            "vstodo-sidebar-view": [
+              {
+                "type": "webview",
+                "id": "vstodo-sidebar",
+                "name": "VSTodo",
+                "icon": "media/terminal-linux.svg",
+                "contextualTitle": "VSTodo"
+              }
+            ]
+        },
 		"commands": [
             {
 				"command": "css-generator.openEditor",

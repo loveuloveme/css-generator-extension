@@ -113,27 +113,3 @@
         }
     }
 }
-
-@media (max-width: 1200px){
-    .point-inf{
-        width: calc(33% - 34px - 10px);   
-    }
-}
-
-@media (max-width: 992px){
-    .point-inf{
-        width: calc(33% - 34px - 10px);   
-    }
-}   
-
-@media (max-width: 767px){
-    .point-inf{
-        width: calc(50% - 34px - 10px);
-    }
-}
-
-@media (max-width: 400px){
-    .point-inf{
-        width: calc(100% - 34px - 10px);
-    }
-}

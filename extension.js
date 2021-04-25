@@ -1,6 +1,8 @@
 const vscode = require('vscode');
 const getWebviewContent = require('./webview');
 
+const SidebarProvider = require('./SideBarProvider');
+
 function activate(context) {
     var panel = undefined;
     var position = undefined;
@@ -9,6 +11,20 @@ function activate(context) {
     var editByExt = true;
 
     var events = [];
+
+
+    const sidebarProvider = new SidebarProvider(context);
+
+    const item = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right
+    );
+    item.text = "$(beaker) Add Todo";
+    item.command = "vstodo.addTodo";
+    item.show();
+
+    context.subscriptions.push(
+        vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider)
+    );
     
     let initWebViewPanel = () => {
         panel = vscode.window.createWebviewPanel(

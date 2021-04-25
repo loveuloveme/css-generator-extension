@@ -2,8 +2,8 @@
 
 .slider{
     &-add{
-        font-weight: bold;
-        background-color: $blue;
+        //font-weight: bold;
+        background-color: $vscode-blue;
         margin-top: 18px;
         text-transform: uppercase;
         cursor: pointer;
@@ -15,7 +15,7 @@
         transition: all 0.2s ease-out;
 
         &:hover{
-            background-color: $dark-blue;
+            background-color: $vscode-blue-light;
         }
     }
 
@@ -74,4 +74,8 @@
 
 .rc-slider-disabled{
     background-color: transparent !important;
+}
+
+.range-slider{
+    width: 100%;
 }

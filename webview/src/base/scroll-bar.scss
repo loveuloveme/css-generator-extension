@@ -6,6 +6,7 @@ $scroll-color: rgb(133, 133, 133);
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
+    display: none;
     width: 4px;
 }
 

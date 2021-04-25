@@ -1,4 +1,3 @@
-import './App.scss';
 import './base/scroll-bar.scss';
 import './base/userSelect.scss';
 
@@ -9,6 +8,7 @@ import TypeSelector from './components/TypeSelector';
 import RangeController from './components/RangeController';
 import PointInf from './components/PointInf';
 
+import './App.scss';
 
 function App({vscode}) {
     const [type, setType] = useState(0);
