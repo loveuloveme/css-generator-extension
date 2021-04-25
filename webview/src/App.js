@@ -1,6 +1,8 @@
 import './App.scss';
 import './base/scroll-bar.scss';
-import { useState, useEffect, useRef } from 'react';
+import './base/userSelect.scss';
+
+import {useState, useEffect} from 'react';
 import { ChromePicker } from 'react-color'
 
 import TypeSelector from './components/TypeSelector';
@@ -10,7 +12,7 @@ import PointInf from './components/PointInf';
 
 function App({vscode}) {
     const [type, setType] = useState(0);
-    const [angle, setAngle] = useState(0);
+    const [angle, setAngle] = useState(45);
 
     const [colorPicker, setColorPicker] = useState({x: -1, y: -1});
     const [selectedValue, setSelectedValue] = useState(-1);
@@ -18,18 +20,26 @@ function App({vscode}) {
     const [values, setValues] = useState(
         [
             {
-                color: '#fff',
-                x: 50,
+                color: '#e74c3c',
+                x: 0,
                 r: '255',
-                g: '255',
-                b: '255',
+                g: '59',
+                b: '48',
+                a: '1'
+            },
+            {
+                color: '#4B29D2',
+                x: 50,
+                r: '75',
+                g: '41',
+                b: '210',
                 a: '1'
             }, 
             {
-                color: '#323232',
+                color: '#3498db',
                 x: 100,
-                r: '255',
-                g: '255',
+                r: '10',
+                g: '132',
                 b: '255',
                 a: '1'
             }, 
@@ -47,7 +57,6 @@ function App({vscode}) {
         }catch(e){
 
         }
-        console.log(generateFunction());
     }, [values, angle, type]);
 
     let changeColor = (index, value) => {
@@ -66,6 +75,11 @@ function App({vscode}) {
 
     let generateFunction = () => {
         return `${type == 0 ? 'linear' : 'radial'}-gradient(${type == 0 ? `${angle}deg` : 'circle'} ,${values.map(item => `rgba(${item.r}, ${item.g}, ${item.b}, ${item.a}) ${item.x}%`)})`;
+    }
+
+    let _colorPickerPos = element => {
+        let rect = element.current.getBoundingClientRect();
+        setColorPicker({x: rect.x + rect.width - 50, y: rect.y - 200}); 
     }
 
     return (
@@ -123,17 +137,24 @@ function App({vscode}) {
                 <TypeSelector type={type} setType={setType} />
             </div>
             <div className="control">
-                <RangeController values={values} setValues={setValues} angle={angle} setAngle={setAngle}/>
+                <RangeController type={type} values={values} setValues={setValues} angle={angle} setAngle={setAngle}/>
                 <div className="points section">
                 <div className="section-title">Color Information</div>
                     <div className="points-wrapper">
                         {values.map((item, index) => 
                             <PointInf
                                 value={item}
-                                onClick={(x, y) => {
+
+                                onClick={(element) => {
                                     setSelectedValue(index);
-                                    setColorPicker({x, y});
+                                    
+                                    _colorPickerPos(element);
+
+                                    window.addEventListener('resize',  () => {
+                                        _colorPickerPos(element);
+                                    });
                                 }}
+
                                 removeAction={() => removeValue(index)}
                                 changeValue={value => {
                                     changeColor(index, value);
@@ -141,6 +162,7 @@ function App({vscode}) {
                                 removeEnabled={values.length > 2}
                                 index={index}
                                 key={index}
+                                selected={index == selectedValue}
                             />
                         )}
                     </div>

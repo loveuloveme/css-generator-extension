@@ -14,7 +14,7 @@ const initialValue = {
     a: '1'
 };
 
-function RangeController({values, setValues, angle, setAngle}){
+function RangeController({values, setValues, angle, setAngle, type}){
     let handleChange = data => {
         let colorValues = [...values];
 
@@ -28,8 +28,6 @@ function RangeController({values, setValues, angle, setAngle}){
     let addPoint = () => {
         let colorValues = [...values];
 
-        let mid = Math.floor(colorValues.length/2);
-
         colorValues.push({...initialValue});
 
         colorValues.sort(function(a, b) {
@@ -42,10 +40,11 @@ function RangeController({values, setValues, angle, setAngle}){
 
     return(
         <div className="slider-wrapper section">
-            <div className="section-title">
+
+            <div className={"section-title" + (type === 1 ? ' disabled': '')}>
                 Angle
             </div>
-            <div className="slider-wrapper-angle">
+            <div className={"slider-wrapper-angle" + (type === 1 ? ' disabled': '')}>
                 <Slider 
                     railStyle={{backgroundColor: '#323232'}}
                     trackStyle={{backgroundColor: '#fff'}}
@@ -57,11 +56,13 @@ function RangeController({values, setValues, angle, setAngle}){
                     onChange={setAngle}
                     min={0}
                     max={360}
+                    disabled={type === 1}
                 />
                 <div className="angle">
                     {angle}<span>deg</span>
                 </div>
             </div>
+
             <div className="section-title">
                 Range
             </div>

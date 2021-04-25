@@ -3,16 +3,20 @@
 .slider{
     &-add{
         font-weight: bold;
-        font-weight: 600;
-        color: $blue;
+        background-color: $blue;
         margin-top: 18px;
-
-        text-transform: lowercase;
-
+        text-transform: uppercase;
         cursor: pointer;
-
-        //align-self: flex-end;
         margin-bottom: 15px;
+        padding: 10px 24px;
+        color: #fff;
+        margin-top: 36px;
+
+        transition: all 0.2s ease-out;
+
+        &:hover{
+            background-color: $dark-blue;
+        }
     }
 
     &-wrapper{
@@ -25,6 +29,16 @@
 
         margin-top: 10px;
 
+        .section-title{
+            transition: opacity 0.2s ease-in;
+        }
+
+        .section-title.disabled{
+            opacity: 0.6;
+        }
+
+        
+
         &-angle{
             display: flex;
             width: 100%;
@@ -35,7 +49,7 @@
                 margin-top: -24px;
                 padding: 10px;
                 width: 146px;
-                text-align: right;
+                text-align: center;
                 background-color: white;
                 color: #000;
 
@@ -44,6 +58,20 @@
                     font-weight: bold;
                 }
             }
+
+            transition: opacity 0.2s ease-in;
+
+            &.disabled{
+                opacity: 0.5;
+
+                .angle{
+                    opacity: 0.5;
+                }
+            }
         }
     }
+}
+
+.rc-slider-disabled{
+    background-color: transparent !important;
 }

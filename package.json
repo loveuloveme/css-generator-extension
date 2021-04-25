@@ -1,8 +1,9 @@
 {
 	"name": "css-generator",
 	"displayName": "css-generator",
-	"description": "",
+	"description": "CSS gradient generator",
 	"version": "0.0.1",
+    "icon": "./img/icon.png",
 	"engines": {
 		"vscode": "^1.55.0"
 	},
@@ -10,16 +11,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:css-generator.helloWorld",
-        "onCommand:css-generator.helloWorldAgain"
+		"onCommand:css-generator.openEditor"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [
-			{
-				"command": "css-generator.helloWorld",
-				"title": "Hello World"
-			},
             {
 				"command": "css-generator.openEditor",
 				"title": "Make CSS gradient"
@@ -28,7 +24,7 @@
         "menus": {
             "editor/context": [
                 {
-                    "when": "resourceLangId == css",
+                    "when": "resourceLangId == css || resourceLangId == scss",
                     "command": "css-generator.openEditor",
                     "group": "YourGroup@1"
                 }

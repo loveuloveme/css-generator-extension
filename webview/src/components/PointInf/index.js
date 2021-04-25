@@ -15,8 +15,8 @@ function PointInf({value, changeValue, onClick, index, removeAction, removeEnabl
         updateValue(_value);
     }, []);
 
+
     let updateValue = (_value) => {
-        console.log(`rgb(${parseInt(_value.r) || 0}, ${parseInt(_value.g) || 0}, ${parseInt(_value.b) || 0})`);
         _value.color = Util.RgbAToHex(`rgb(${parseInt(_value.r) || 0}, ${parseInt(_value.g) || 0}, ${parseInt(_value.b) || 0})`);
         changeValue(_value);
     };
@@ -31,10 +31,7 @@ function PointInf({value, changeValue, onClick, index, removeAction, removeEnabl
                 <div
                     className="color"
                     ref={element}
-                    onClick={() => {
-                        let rect = element.current.getBoundingClientRect();
-                        onClick(rect.x + rect.width, rect.y - 250);
-                    }}
+                    onClick={() => onClick(element)}
                     style={{
                         backgroundColor: value.color
                     }}
