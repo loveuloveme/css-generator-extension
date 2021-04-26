@@ -11,7 +11,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:css-generator.openEditor"
+		"onCommand:css-generator.openEditor",
+        "onLanguage:css",
+        "onLanguage:scss"
 	],
 	"main": "./extension.js",
 	"contributes": {

@@ -35,7 +35,9 @@ function PointInf({value, changeValue, onClick, index, removeAction, removeEnabl
                     style={{
                         backgroundColor: value.color
                     }}
-                ></div>
+                >
+                    <span>{value.color}</span>
+                </div>
                 <div className="color-inf">
                     <div className="position">
                         {`${value.x}%`}
