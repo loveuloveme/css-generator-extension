@@ -1,9 +1,10 @@
 {
 	"name": "css-generator",
-	"displayName": "css-generator",
+	"displayName": "CSS gradient generator",
 	"description": "Шняга, сделанная при поддержке Якидана",
 	"version": "0.0.1",
-    "publisher": "hehe",
+    "publisher": "Yakidan-Tech",
+    "icon": "media/icon.png",
 	"engines": {
 		"vscode": "^1.55.0"
 	},
@@ -26,7 +27,7 @@
 				{
 					"id": "css-generator-sidebar-view",
 					"title": "CSS generator",
-					"icon": "media/terminal-linux.svg"
+					"icon": "media/paintcan.svg"
 				}
 			]
 		},
@@ -36,7 +37,7 @@
 					"type": "webview",
 					"id": "css-generator-sidebar-view",
 					"name": "",
-					"icon": "media/terminal-linux.svg",
+					"icon": "media/paintcan.svg",
 					"contextualTitle": ""
 				}
 			]

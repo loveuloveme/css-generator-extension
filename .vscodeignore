@@ -12,3 +12,4 @@ webpack.config.js
 build.vsix
 **/src/webview/**
 !**/src/webview/build
+!**/media
