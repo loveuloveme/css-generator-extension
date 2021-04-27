@@ -10,3 +10,5 @@ vsc-extension-quickstart.md
 webpack.config.js
 **/node_modules/
 build.vsix
+**/src/webview/**
+!**/src/webview/build

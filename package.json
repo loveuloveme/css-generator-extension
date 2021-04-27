@@ -19,7 +19,7 @@
 		"onLanguage:css",
 		"onLanguage:scss"
 	],
-	"main": "./dist/extension.js",
+	"main": "./src/extension.js",
 	"contributes": {
 		"viewsContainers": {
 			"activitybar": [
