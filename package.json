@@ -1,72 +1,77 @@
 {
 	"name": "css-generator",
 	"displayName": "css-generator",
-	"description": "CSS gradient generator",
+	"description": "Шняга, сделанная при поддержке Якидана",
 	"version": "0.0.1",
-    "icon": "./media/icon.png",
+    "publisher": "hehe",
 	"engines": {
 		"vscode": "^1.55.0"
+	},
+    "repository": {
+		"url": "https://github.com/loveuloveme/css-generator-extension.git",
+		"type": "git"
 	},
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
 		"onCommand:css-generator.openEditor",
-        "onLanguage:css",
-        "onLanguage:scss"
+		"onLanguage:css",
+		"onLanguage:scss"
 	],
-	"main": "./extension.js",
+	"main": "./dist/extension.js",
 	"contributes": {
-        "viewsContainers": {
-            "activitybar": [
-              {
-                "id": "vstodo-sidebar-view",
-                "title": "VSTodo",
-                "icon": "media/terminal-linux.svg"
-              }
-            ]
-          },
-          "views": {
-            "vstodo-sidebar-view": [
-              {
-                "type": "webview",
-                "id": "vstodo-sidebar",
-                "name": "VSTodo",
-                "icon": "media/terminal-linux.svg",
-                "contextualTitle": "VSTodo"
-              }
-            ]
-        },
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "css-generator-sidebar-view",
+					"title": "CSS generator",
+					"icon": "media/terminal-linux.svg"
+				}
+			]
+		},
+		"views": {
+			"css-generator-sidebar-view": [
+				{
+					"type": "webview",
+					"id": "css-generator-sidebar-view",
+					"name": "",
+					"icon": "media/terminal-linux.svg",
+					"contextualTitle": ""
+				}
+			]
+		},
 		"commands": [
-            {
+			{
 				"command": "css-generator.openEditor",
-				"title": "Make CSS gradient"
+				"title": "Make/Edit gradient"
 			}
 		],
-        "menus": {
-            "editor/context": [
-                {
-                    "when": "resourceLangId == css || resourceLangId == scss",
-                    "command": "css-generator.openEditor",
-                    "group": "YourGroup@1"
-                }
-            ]
-        }
+		"menus": {
+			"editor/context": [
+				{
+					"when": "resourceLangId == css || resourceLangId == scss",
+					"command": "css-generator.openEditor",
+					"group": "YourGroup@1"
+				}
+			]
+		}
 	},
 	"scripts": {
-		"lint": "eslint .",
-		"pretest": "npm run lint",
-		"test": "node ./test/runTest.js"
+        "build": "vsce package --out build.vsix"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.4",
 		"@types/node": "^12.11.7",
 		"@types/vscode": "^1.55.0",
+		"esbuild": "^0.11.15",
 		"eslint": "^7.19.0",
 		"glob": "^7.1.6",
 		"mocha": "^8.2.1",
 		"typescript": "^4.1.3",
-		"vscode-test": "^1.5.0"
+		"vscode-test": "^1.5.0",
+		"webpack": "^5.35.1",
+		"webpack-cli": "^4.6.0"
 	}
 }

@@ -104,7 +104,7 @@ function App({vscode}) {
                 });
             }
         }catch(e){
-            //setNoEditor(true);
+            setNoEditor(true);
         }
     }, [values, angle, type]);
 

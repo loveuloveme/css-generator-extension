@@ -9,26 +9,10 @@ class SidebarProvider{
     lastPosition;
     editor;
     editByExt = true;
-    firstTime = true;
     webviewReady = false;
 
     constructor(context){
         this.context = context;
-    }
-
-    _parseCode = (code, position) => {
-        let strings = code.split(/\n/g);
-        let tab = new Array(position.character + 1).join(' ');
-        
-        return strings.join('\n' + tab);
-    }
-
-    _default(){
-        this.position = undefined;
-        this.lastPosition = undefined;
-        this.editor = undefined;
-
-        this.editByExt = true;
     }
 
     resolveWebviewView(webviewView, context, token){
@@ -76,14 +60,6 @@ class SidebarProvider{
         );
     }
 
-    _putCode(message){
-        this.editor.edit(editBuilder => {
-            this.editByExt = true;
-            editBuilder.replace(this.lastPosition ? new vscode.Range(this.position, this.lastPosition) : this.position, this._parseCode(message.text, this.position));
-            this.lastPosition = this.position.with(this.position.line + 2, this.position.character + message.text.length);
-        });
-    }
-
     revive(panel){
         this.panel = panel;
     }
@@ -99,7 +75,9 @@ class SidebarProvider{
         this.editor = editor;
         this.position = this.editor.selection.start;
 
-        if(this.editor.selection.start == this.editor.selection.end){
+
+        if(this.editor.selection.start._line == this.editor.selection.end._line && this.editor.selection.start._character == this.editor.selection.end._character){
+            this.panel.webview.postMessage({command: 'editor-changed'});
             return;
         }
 
@@ -163,6 +141,29 @@ class SidebarProvider{
         }
     }
 
+    _parseCode = (code, position) => {
+        let strings = code.split(/\n/g);
+        let tab = new Array(position.character + 1).join(' ');
+        
+        return strings.join('\n' + tab);
+    }
+
+    _default(){
+        this.position = undefined;
+        this.lastPosition = undefined;
+        this.editor = undefined;
+
+        this.editByExt = true;
+    }
+
+    _putCode(message){
+        this.editor.edit(editBuilder => {
+            this.editByExt = true;
+            editBuilder.replace(this.lastPosition ? new vscode.Range(this.position, this.lastPosition) : this.position, this._parseCode(message.text, this.position));
+            this.lastPosition = this.position.with(this.position.line + 2, this.position.character + message.text.length);
+        });
+    }
+
     _sendData(data){
         this.panel.webview.postMessage({command: 'editor-data', data: data});
     }
@@ -188,7 +189,7 @@ class SidebarProvider{
             let hrefs = [...html.matchAll(/href=['"]([^'"]+?)['"]/g), ...html.matchAll(/src=['"]([^'"]+?)['"]/g)];
     
             hrefs.forEach(item => {
-                html = html.replace(item[1], this.panel.webview.asWebviewUri(vscode.Uri.file(path.join(this.context.extensionPath, `/webview/build${item[1]}`))));
+                html = html.replace(item[1], this.panel.webview.asWebviewUri(vscode.Uri.file(path.join(this.context.extensionPath, 'src', `/webview/build${item[1]}`))));
             });
     
             return html;

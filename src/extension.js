@@ -5,7 +5,7 @@ function activate(context) {
     const sidebarProvider = new SidebarProvider(context);
 
     context.subscriptions.push(
-        vscode.window.registerWebviewViewProvider("vstodo-sidebar", sidebarProvider, {retainContextWhenHidden: true})
+        vscode.window.registerWebviewViewProvider('css-generator-sidebar-view', sidebarProvider)
     );
     
     let createEditorWindow = vscode.commands.registerCommand('css-generator.openEditor', function (){
