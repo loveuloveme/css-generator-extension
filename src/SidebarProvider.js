@@ -99,43 +99,44 @@ class SidebarProvider{
                 values.type = (textMatch.search("background:-moz-radial-gradient;background:-webkit-radial-gradient;background:radial-gradient;") != -1) ? 1 : -1;
             }
 
+            if(values.type != -1){
+                let params = [...text.matchAll(/\(.*\)/g)];
 
-            let params = [...text.matchAll(/\(.*\)/g)];
+                params.forEach((param, index) => {
+                    if(index != 0) return;
 
-            params.forEach((param, index) => {
-                if(index != 0) return;
+                    let text = param[0].replace(/\n| |\r/g, '');
 
-                let text = param[0].replace(/\n| |\r/g, '');
+                    let data = [...(text.matchAll(/rgba\([0-9]+,[0-9]+,[0-9]+,[0-9]+\)[0-9]+%/g))];
+                    
+                    let arg = text.replace(/ /g, '').split(',');
+                    if(arg[0].search('deg') != -1){
+                        values.arg = parseInt(arg[0].substr(1, arg[0].length).replace('deg', '')); 
+                    }else{
+                        values.arg = arg[0].substr(1, arg[0].length); 
+                    }
 
-                let data = [...(text.matchAll(/rgba\([0-9]+,[0-9]+,[0-9]+,[0-9]+\)[0-9]+%/g))];
-                
-                let arg = text.replace(/ /g, '').split(',');
-                if(arg[0].search('deg') != -1){
-                    values.arg = parseInt(arg[0].substr(1, arg[0].length).replace('deg', '')); 
-                }else{
-                    values.arg = arg[0].substr(1, arg[0].length); 
-                }
+                    data.forEach(item => {
+                        item = item[0];
 
-                data.forEach(item => {
-                    item = item[0];
+                        // if(index != 1) return;
 
-                    // if(index != 1) return;
+                        let color = (item.split(')')[0]+')');
+                        color = color.substring(4, color.length-1).replace(/ /g, '').split(',');
+                        let x = parseInt(item.split(')')[1].replace('%', ''));
 
-                    let color = (item.split(')')[0]+')');
-                    color = color.substring(4, color.length-1).replace(/ /g, '').split(',');
-                    let x = parseInt(item.split(')')[1].replace('%', ''));
+                        values.values.push({
+                            x: x,
+                            r: parseInt(color[0].substr(1, color[0].length)),
+                            g: parseInt(color[1]),
+                            b: parseInt(color[2]),
+                            a: parseInt(color[3])
+                        });
+                    })
+                });
 
-                    values.values.push({
-                        x: x,
-                        r: parseInt(color[0].substr(1, color[0].length)),
-                        g: parseInt(color[1]),
-                        b: parseInt(color[2]),
-                        a: parseInt(color[3])
-                    });
-                })
-            });
-
-            this._sendData(values);
+                this._sendData(values);
+            }
         }else{
             this.panel.webview.postMessage({command: 'editor-changed'});
         }

@@ -1,4 +1,4 @@
-@import 'base/colors';
+@import '../../base/colors';
 
 .App{
     width: 100%;
@@ -40,6 +40,7 @@
 
     flex: 1; 
     min-height: 0;
+    overflow: auto;
 
     &-type{
         width: 90%;
@@ -67,11 +68,7 @@
 
 
 .points{
-    flex-grow: 1;
-    display: flex;
     flex-direction: column;
-    min-height: 0;
-
     &-wrapper{
         display: flex;
         //align-items: flex-start;
@@ -79,12 +76,11 @@
         flex-wrap: wrap;
 
         //flex-grow: 1;
-        overflow-y: auto;
-        overflow-x: hidden;
 
         padding-bottom: 30px;
     }
 }
+
 
 .section{
     width: 90%;
@@ -215,7 +211,7 @@
 
     .slider{
         &-add{
-            font-size: 0.9rem;
+            
         }
     }
     

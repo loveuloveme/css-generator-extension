@@ -1,15 +1,14 @@
-import './base/scroll-bar.scss';
-import './base/userSelect.scss';
+import '../../base/scroll-bar.scss';
 
 import {useState, useEffect} from 'react';
 import { ChromePicker } from 'react-color'
 
-import TypeSelector from './components/TypeSelector';
-import RangeController from './components/RangeController';
-import PointInf from './components/PointInf';
-import './App.scss';
+import TypeSelector from '../TypeSelector';
+import RangeController from '../RangeController';
+import PointInf from '../PointInf';
+import './index.scss';
 
-import util from './util.js';
+import util from '../../util.js';
 
 let defaultValues = {
     values: [
@@ -53,21 +52,27 @@ function App({vscode}) {
     const [noEditor, setNoEditor] = useState(true);
     const [isInnerData, setIsInnerData] = useState(false);
 
+    let _setDefaultValue = () => {
+        setValues([...defaultValues.values]);
+        setAngle(defaultValues.angle);
+        setType(0);
+    };
+
     useEffect(() => {
         window.addEventListener('message', event => {
             const message = event.data;
 
             switch(message.command){
                 case 'editor-changed':
+                    _setDefaultValue();
                     setNoEditor(false);
-                    setValues([...defaultValues.values]);
-                    setAngle(defaultValues.angle)
                     break;
                 case 'editor-lost':
                     setNoEditor(true);
+                    _setDefaultValue();
                     break;
                 case 'editor-data':
-                    setIsInnerData(true)
+                    setIsInnerData(true);
                     setValues(message.data.values.map(item => {
                         return {
                             color: util.RgbAToHex(`rgba(${item.r}, ${item.g}, ${item.b}, ${item.a})`),
@@ -97,11 +102,13 @@ function App({vscode}) {
     useEffect(() => {
         try{
             if(!isInnerData){
-                let generatedFunction = generateFunction();
-                vscode.postMessage({
-                    command: 'css-code',
-                    text: `background: -moz-${generatedFunction};\r\nbackground: -webkit-${generatedFunction};\r\nbackground: ${generatedFunction};`
-                });
+                if(!noEditor){
+                    let generatedFunction = generateFunction();
+                    vscode.postMessage({
+                        command: 'css-code',
+                        text: `background: -moz-${generatedFunction};\r\nbackground: -webkit-${generatedFunction};\r\nbackground: ${generatedFunction};`
+                    });
+                }
             }
         }catch(e){
             setNoEditor(true);
